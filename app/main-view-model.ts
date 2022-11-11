@@ -1,4 +1,6 @@
-import { Observable } from '@nativescript/core'
+import { ImageAsset, ImageSource, Observable } from '@nativescript/core'
+import { GC } from '@nativescript/core/utils';
+import { create as ImagePickerFactory, Options as PickerOptions } from '@nativescript/imagepicker';
 
 export class HelloWorldModel extends Observable {
   private _counter: number
@@ -23,9 +25,32 @@ export class HelloWorldModel extends Observable {
     }
   }
 
-  onTap() {
-    this._counter--
-    this.updateMessage()
+  async onTap() {
+    let imagePicker = ImagePickerFactory({
+      ...{
+        mode: 'multiple',
+        mediaType: 1,
+      },
+    });
+
+    try {
+      await imagePicker.authorize();
+      const images = await imagePicker.present();
+      this.handleImages(images);
+    } catch (error) {
+      return await Promise.reject();
+    }
+  }
+
+  async handleImages(images: ImageAsset[]) {
+    let imageSource = null;
+    for (let index = 0; index < images.length; index++) {
+      const image = images[index];
+      imageSource = await ImageSource.fromAsset(image);
+      GC()
+    }
+
+    imageSource = null;
   }
 
   private updateMessage() {
