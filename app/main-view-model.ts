@@ -1,4 +1,4 @@
-import { ImageAsset, ImageSource, Observable } from '@nativescript/core'
+import { Frame, ImageAsset, ImageSource, Observable } from '@nativescript/core'
 import { GC } from '@nativescript/core/utils';
 import { create as ImagePickerFactory, Options as PickerOptions } from '@nativescript/imagepicker';
 
@@ -8,6 +8,13 @@ export class HelloWorldModel extends Observable {
 
   constructor() {
     super()
+
+    // setTimeout(() => {
+    //   Frame.topmost().navigate({
+    //     moduleName: 'main-page',
+    //     clearHistory: true,
+    //   });
+    // }, 700)
 
     // Initialize default values.
     this._counter = 42
